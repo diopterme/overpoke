@@ -18,6 +18,12 @@ PC 화면에 알림 창을 띄우고, 원하면 휴대폰으로도 알려 줍니
 - 공휴일은 앱이 알아서 받아옵니다. 회사 창립기념일처럼 따로 쉬는 날은 직접 추가할 수 있습니다.
 - 오늘 더는 알림을 받기 싫으면 "**오늘은 그만**"을 누르세요. 자정이 지나면 다시 켜집니다.
 
+## 다운로드
+
+- **Windows**: [overpoke_0.1.0_x64-setup.exe](https://github.com/diopterme/overpoke/releases/latest/download/overpoke_0.1.0_x64-setup.exe)
+- **Mac** (M1 이후): [overpoke_0.1.0_aarch64.dmg](https://github.com/diopterme/overpoke/releases/latest/download/overpoke_0.1.0_aarch64.dmg)
+  — 열어서 앱을 응용 프로그램 폴더로 끌어 넣습니다. "확인되지 않은 개발자" 경고가 뜨면 **시스템 설정 → 개인정보 보호 및 보안**에서 **그래도 열기**를 누릅니다.
+
 ## 사용 방법
 
 1. **설치** — 설치 파일을 실행합니다. 파란 경고창이 뜨면 **추가 정보 → 실행**을 누릅니다.
