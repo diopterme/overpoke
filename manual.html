@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>초과콕 사용설명서</title>
+<style>
+  :root {
+    --bg: #f4f5f7; --panel: #fff; --text: #1c2230; --muted: #5f6878; --line: #dfe3ea;
+    --acc: #2f6fed; --mark: #e8590c; --warn: #b4540a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15181e; --panel: #1e222b; --text: #e6e9ef; --muted: #9aa3b2; --line: #313744;
+      --acc: #5b8cff; --mark: #ff8a3d; --warn: #f0a050;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.7 "Segoe UI", "Malgun Gothic", -apple-system, "Apple SD Gothic Neo", sans-serif;
+    word-break: keep-all;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 40px 16px 72px; }
+  header { display: flex; gap: 16px; align-items: center; margin-bottom: 8px; }
+  header img { width: 64px; height: 64px; }
+  h1 { font-size: 28px; margin: 0; }
+  .lead { color: var(--muted); margin: 4px 0 0; }
+  h2 { font-size: 21px; margin: 56px 0 12px; display: flex; gap: 10px; align-items: center; }
+  h2 .n {
+    flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--acc); color: #fff;
+    font-size: 16px; display: grid; place-items: center;
+  }
+  ol, ul { padding-left: 22px; }
+  li { margin: 4px 0; }
+  b.k { color: var(--acc); }
+  .tip { color: var(--muted); font-size: 15px; }
+
+  /* 그림: 실제 앱 화면을 단순화해 그린 것 */
+  .fig { margin: 20px 0; display: flex; justify-content: center; overflow-x: auto; }
+  .win {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,.12); font-size: 14px; line-height: 1.5; flex: none;
+  }
+  .bar { padding: 7px 12px; font-size: 13px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; }
+  .btn {
+    display: inline-block; border: 1px solid var(--line); border-radius: 6px; padding: 4px 12px;
+    background: var(--panel); font-size: 14px; white-space: nowrap;
+  }
+  .btn.pri { background: var(--acc); border-color: var(--acc); color: #fff; }
+  .hl { outline: 3px solid var(--mark); outline-offset: 3px; border-radius: 4px; }
+  .tag {
+    display: inline-block; background: var(--mark); color: #fff; font-size: 12px; font-weight: 700;
+    border-radius: 99px; padding: 0 8px; margin-left: 8px; vertical-align: middle;
+  }
+
+  /* Windows 경고창 */
+  .smart { width: 420px; background: #0f5ab4; color: #fff; padding: 22px 24px; border-radius: 4px; flex: none; font-size: 14px; }
+  .smart h3 { margin: 0 0 12px; font-size: 22px; font-weight: 400; }
+  .smart u { cursor: default; }
+  .smart .foot { display: flex; justify-content: flex-end; gap: 8px; margin-top: 22px; }
+  .smart .sbtn { border: 1px solid #fff; padding: 4px 20px; }
+
+  /* 설정 창 */
+  .set { width: 600px; }
+  .set .body { display: flex; height: 250px; }
+  .set nav { width: 120px; padding: 10px 6px; border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; }
+  .set nav span { padding: 5px 10px; border-left: 3px solid transparent; border-radius: 4px; }
+  .set nav .on { border-left-color: var(--acc); background: var(--bg); color: var(--acc); font-weight: 600; }
+  .set .page { flex: 1; padding: 14px 16px; background: var(--bg); }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; }
+  .card h4 { margin: 0 0 6px; font-size: 14px; }
+  .row { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
+  .row > span:first-child { width: 130px; }
+  .inp { border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; background: var(--bg); min-width: 110px; }
+  .set .save { padding: 8px 14px; border-top: 1px solid var(--line); text-align: right; }
+  .hint { color: var(--muted); font-size: 12px; }
+
+  /* 알림 팝업 */
+  .pop { width: 360px; padding: 18px 18px 14px; }
+  .pop .main { display: flex; gap: 14px; align-items: center; margin-bottom: 18px; }
+  .clock { width: 34px; height: 34px; border: 3px solid var(--acc); border-radius: 50%; position: relative; flex: none; }
+  .clock::before, .clock::after { content: ""; position: absolute; background: var(--acc); border-radius: 2px; }
+  .clock::before { left: 12px; top: 5px; width: 3px; height: 11px; }
+  .clock::after { left: 12px; top: 13px; width: 9px; height: 3px; }
+  .pop .time { font-size: 22px; font-weight: 700; line-height: 1.2; }
+  .pop .btns { display: flex; justify-content: flex-end; gap: 8px; }
+
+  /* 작업 표시줄 + 트레이 메뉴 */
+  .tray { width: 340px; flex: none; }
+  .menu { margin-left: auto; width: 190px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 4px; box-shadow: 0 8px 24px rgba(0,0,0,.15); font-size: 14px; }
+  .menu div { padding: 5px 12px; border-radius: 4px; }
+  .menu hr { border: 0; border-top: 1px solid var(--line); margin: 4px 0; }
+  .taskbar { margin-top: 8px; background: #20242c; color: #e6e9ef; border-radius: 6px; padding: 6px 12px; display: flex; justify-content: flex-end; align-items: center; gap: 14px; font-size: 13px; }
+  .taskbar img { width: 20px; height: 20px; }
+
+  .faq dt { font-weight: 700; margin-top: 18px; }
+  .faq dd { margin: 4px 0 0; }
+  footer { margin-top: 64px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 24px; }
+    .fig { justify-content: flex-start; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="data:image/png;base64,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" alt="">
+    <div>
+      <h1>초과콕 사용설명서</h1>
+      <p class="lead">퇴근 후·출근 전·휴일에 매시 정각 "초과근무 기록하세요"라고 알려 주는 앱입니다.</p>
+    </div>
+  </header>
+
+  <h2><span class="n">1</span>설치하기</h2>
+  <ol>
+    <li>설치 파일 <b>overpoke_0.1.0_x64-setup.exe</b>를 더블클릭합니다.</li>
+    <li>파란 경고창이 뜨면 <b class="k">추가 정보</b>를 누르고, 이어서 나오는 <b class="k">실행</b>을 누릅니다.</li>
+    <li>사용 안내를 읽고 <b class="k">동의함</b> → <b class="k">설치</b>를 누릅니다.</li>
+  </ol>
+  <div class="fig">
+    <div class="smart">
+      <h3>Windows의 PC 보호</h3>
+      <div>Microsoft Defender SmartScreen에서 인식할 수 없는 앱의 시작을 차단했습니다. 이 앱을 실행하면 PC가 위험에 노출될 수 있습니다.</div>
+      <div style="margin-top:10px"><u class="hl">추가 정보</u><span class="tag">① 누르기</span></div>
+      <div class="foot"><span class="tag" style="align-self:center">② 누르기</span><span class="sbtn hl">실행</span><span class="sbtn">실행 안 함</span></div>
+    </div>
+  </div>
+  <p class="tip">개인이 만든 무료 앱이라 디지털 서명이 없어서 뜨는 경고입니다. 믿을 수 있는 사람에게 받은 파일만 실행하세요.</p>
+
+  <h2><span class="n">2</span>근무시간 정하기</h2>
+  <p>처음 실행하면 설정 창이 자동으로 열립니다. <b class="k">근무시간</b> 메뉴에서 출퇴근 시각을 맞추고 <b class="k">저장</b>을 누릅니다.</p>
+  <div class="fig">
+    <div class="win set">
+      <div class="bar"><span>초과콕 설정</span><span>✕</span></div>
+      <div class="body">
+        <nav><span>오늘</span><span class="on">근무시간</span><span>휴대폰 알림</span><span>수동 공휴일</span><span>일반</span></nav>
+        <div class="page">
+          <div class="card hl">
+            <h4>근무시간</h4>
+            <div class="row"><span>근무 시작</span><span class="inp">오전 09:00</span></div>
+            <div class="row"><span>근무 종료</span><span class="inp">오후 06:00</span></div>
+            <div class="row"><span>퇴근 후 첫 알림까지</span><span class="inp">10분 ▾</span></div>
+            <div class="hint">평일에는 근무 시작 전과 '종료 + 유예' 이후에 매시 정각 알립니다.</div>
+          </div>
+        </div>
+      </div>
+      <div class="save"><span class="btn pri hl">저장</span></div>
+    </div>
+  </div>
+  <p>이렇게 두면 알림은 이때 옵니다.</p>
+  <ul>
+    <li><b>평일</b>: 18:10, 19:00, 20:00 … 다음 날 08:00 (근무시간 중에는 안 옴)</li>
+    <li><b>주말·공휴일</b>: 하루 종일 매시 정각</li>
+  </ul>
+  <p class="tip">평일 아침은 출근 1시간 전(8시)보다 먼저 PC를 켰을 때만 알립니다. 8시 이후에 켜면 정시 출근으로 보고 알리지 않습니다. 주말·공휴일은 언제 켜든 바로 알립니다.</p>
+  <p class="tip">공휴일은 자동으로 받아옵니다. 회사 창립기념일처럼 목록에 없는 쉬는 날은 <b>수동 공휴일</b>에 날짜를 추가하세요.</p>
+
+  <h2><span class="n">3</span>알림이 오면</h2>
+  <p>화면에 이런 창이 뜹니다. 초과근무를 기록하고 <b class="k">확인</b>을 누르면 닫힙니다.</p>
+  <div class="fig">
+    <div class="win pop">
+      <div class="main">
+        <div class="clock"></div>
+        <div><div class="time">19:00</div><div>초과근무 기록 버튼을 누르세요</div></div>
+      </div>
+      <div class="btns"><span class="btn">오늘은 그만</span><span class="btn pri">확인</span></div>
+    </div>
+  </div>
+  <ul>
+    <li><b>확인</b>: 창을 닫습니다. 다음 정각에 또 알립니다.</li>
+    <li><b>오늘은 그만</b>: 오늘은 더 알리지 않습니다. 실수 방지를 위해 <b>두 번</b> 눌러야 하고, 자정이 지나면 다시 켜집니다.</li>
+  </ul>
+
+  <h2><span class="n">4</span>작업 표시줄 아이콘</h2>
+  <p>설정 창을 닫아도 앱은 꺼지지 않고 화면 오른쪽 아래 작업 표시줄에 머뭅니다. 아이콘을 <b>왼쪽 클릭</b>하면 설정 창, <b>오른쪽 클릭</b>하면 메뉴가 열립니다.</p>
+  <div class="fig">
+    <div class="tray">
+      <div class="menu"><div>설정</div><div>오늘 알림 끄기</div><hr><div>종료</div></div>
+      <div class="taskbar"><span>^</span><img class="hl" src="data:image/png;base64,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" alt="초과콕 아이콘"><span>가</span><span>오후 7:00</span></div>
+    </div>
+  </div>
+  <p class="tip">아이콘이 안 보이면 작업 표시줄의 <b>^</b>(숨겨진 아이콘)를 눌러 보세요.</p>
+
+  <h2><span class="n">5</span>휴대폰으로도 받기 <span class="tip" style="font-weight:400">(선택)</span></h2>
+  <p>자리를 비웠을 때도 알림을 받고 싶으면 켜세요. 아래는 <b>텔레그램</b>으로 받는 방법입니다. 나만 쓰는 알림용 봇을 하나 만듭니다.</p>
+  <ol>
+    <li>텔레그램에서 <b>@BotFather</b>를 검색해 대화를 열고 <code>/newbot</code>을 보냅니다.</li>
+    <li>봇 이름(예: <code>초과콕</code>)과 아이디(끝이 bot, 예: <code>chogwa_kim_bot</code>)를 차례로 보내면 <b>토큰</b>을 줍니다.<br>
+      <span class="tip">예: <code>7712345678:AAHk3x…</code> — 비밀번호와 같으니 남에게 보여 주지 마세요.</span></li>
+    <li>방금 만든 봇과 대화를 열어 <b>시작</b>을 누르고 아무 말이나 한 번 보냅니다.</li>
+    <li>PC 브라우저 주소창에 <code>https://api.telegram.org/bot<i>토큰</i>/getUpdates</code>를 넣어 엽니다.<br>
+      화면에서 <code>"chat":{"id":<b>123456789</b></code>의 숫자가 <b>chat_id</b>입니다.</li>
+    <li>설정 창 <b class="k">휴대폰 알림</b>에서 <b>텔레그램</b>을 체크하고 봇 토큰과 chat_id를 넣습니다.</li>
+    <li><b class="k">텔레그램 테스트</b>를 눌러 휴대폰에 메시지가 오면 <b class="k">저장</b>.</li>
+  </ol>
+  <div class="fig">
+    <div class="win set">
+      <div class="bar"><span>초과콕 설정</span><span>✕</span></div>
+      <div class="body">
+        <nav><span>오늘</span><span>근무시간</span><span class="on">휴대폰 알림</span><span>수동 공휴일</span><span>일반</span></nav>
+        <div class="page">
+          <div class="card">
+            <h4>휴대폰 알림</h4>
+            <div>☐ ntfy</div>
+            <div>☑ 텔레그램</div>
+            <div style="margin-left:22px">
+              <div class="row"><span>봇 토큰</span><span class="inp hl">••••••••••••</span></div>
+              <div class="row"><span>chat_id</span><span class="inp hl">123456789</span></div>
+              <div class="row"><span class="btn hl" style="width:auto">텔레그램 테스트</span><span class="hint" style="color:#0b8457">✓ 보냈습니다. 휴대폰을 확인하세요</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="save"><span class="btn pri">저장</span></div>
+    </div>
+  </div>
+  <p class="tip">텔레그램 대신 <b>ntfy</b> 앱을 써도 됩니다. 앱에서 토픽을 하나 구독하고, 같은 화면에서 ntfy를 체크해 같은 토픽을 넣으면 됩니다.</p>
+
+  <h2><span class="n">6</span>자주 묻는 것</h2>
+  <dl class="faq">
+    <dt>PC를 켤 때 자동으로 실행되게 하려면?</dt>
+    <dd>설정 창 <b>일반</b> → <b>컴퓨터를 켜면 자동 실행</b>을 체크하고 저장합니다.</dd>
+    <dt>알림이 안 와요.</dt>
+    <dd>PC가 꺼져 있거나 절전 중이면 알림이 오지 않습니다. 설정 창 <b>오늘</b> 메뉴에서 "오늘은 알림을 껐습니다"라고 나오면 <b>다시 켜기</b>를 누르세요.</dd>
+    <dt>팝업 위치를 바꾸고 싶어요.</dt>
+    <dd>설정 창 <b>일반</b> → <b>팝업 위치</b>에서 화면 가운데 / 오른쪽 아래 중 고르세요.</dd>
+    <dt>앱을 끄거나 지우려면?</dt>
+    <dd>끄기: 작업 표시줄 아이콘 오른쪽 클릭 → <b>종료</b>.<br>지우기: Windows <b>설정 → 앱</b>에서 <b>overpoke</b>를 찾아 제거.</dd>
+  </dl>
+
+  <footer>초과콕은 기록을 잊지 않게 도와주는 알림 도구일 뿐입니다. 초과근무 기록과 신청은 본인이 직접 확인해 주세요.</footer>
+</main>
+</body>
+</html>

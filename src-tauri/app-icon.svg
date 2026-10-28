@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64"><defs><clipPath id="frame"><rect x="4" y="4" width="56" height="56" rx="14"/></clipPath><mask id="moon-r">
+    <rect width="64" height="64" fill="#fff"/>
+    <circle cx="50" cy="13" r="6" fill="#000"/>
+  </mask><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4785"/><stop offset="1" stop-color="#151b34"/></linearGradient><linearGradient id="shirt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9e40"/><stop offset="1" stop-color="#e46a16"/></linearGradient><linearGradient id="lid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f6fa"/><stop offset="1" stop-color="#c3cbd8"/></linearGradient><radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#b5e8ff" stop-opacity=".45"/><stop offset="1" stop-color="#b5e8ff" stop-opacity="0"/></radialGradient><g id="stars" fill="#fff"><circle cx="13" cy="15" r="1" opacity=".8"/><circle cx="21" cy="9.5" r=".8" opacity=".6"/><circle cx="29" cy="13" r=".7" opacity=".5"/></g><g id="worker">
+    <g transform="translate(0 -3)">
+    <path d="M15 54v-6a13 13 0 0 1 13-13h8a13 13 0 0 1 13 13v6Z" fill="url(#shirt)"/>
+    <path d="M28 35l4 4.5 4-4.5Z" fill="#fff"/>
+    <circle cx="32" cy="25" r="8" fill="#f7c59f"/>
+    <path d="M23.7 25a8.3 8.3 0 0 1 16.6 0c-1.6-2-3.2-2.8-5.2-3.1-2.6 1.7-6 2.6-11.4 3.1Z" fill="#2b2440"/>
+    <path d="M27.6 27q1.4 1 2.8 0M33.6 27q1.4 1 2.8 0" fill="none" stroke="#2b2440" stroke-width="1.2" stroke-linecap="round"/>
+    </g>
+    <ellipse cx="32" cy="38" rx="20" ry="6" fill="url(#glow)"/>
+    <rect x="13" y="38" width="38" height="17" rx="3" fill="url(#lid)"/>
+    <rect x="13" y="38" width="38" height="1.6" rx=".8" fill="#9fe0ff"/>
+    <circle cx="32" cy="46.5" r="2.4" fill="#f38321"/>
+    <rect x="8" y="54" width="48" height="3" rx="1.5" fill="#8d97a8"/>
+  </g></defs>
+    <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#sky)"/>
+    <use xlink:href="#stars"/>
+    <circle cx="46" cy="17" r="7" fill="#ffd27a" mask="url(#moon-r)"/>
+    <g clip-path="url(#frame)"><use xlink:href="#worker"/></g>
+  </svg>

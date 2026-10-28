@@ -1,0 +1,8 @@
+/docs/
+/notes/
+CLAUDE.md
+.DS_Store
+._*
+src-tauri/target/
+src-tauri/gen/
+/dist/

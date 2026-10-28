@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>초과콕 설정</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="settings">
+<div class="layout">
+<nav>
+  <button type="button" data-page="status">오늘</button>
+  <button type="button" data-page="work">근무시간</button>
+  <button type="button" data-page="notify">휴대폰 알림</button>
+  <button type="button" data-page="holiday">수동 공휴일</button>
+  <button type="button" data-page="general">일반</button>
+</nav>
+<main>
+  <section class="card" id="p-status">
+    <h2>오늘</h2>
+    <p id="todayText">불러오는 중…</p>
+    <p id="nextText"></p>
+    <div class="row">
+      <span id="muteText"></span>
+      <button type="button" id="unmute" hidden>다시 켜기</button>
+    </div>
+  </section>
+
+  <section class="card" id="p-work" hidden>
+    <h2>근무시간</h2>
+    <label class="field">근무 시작 <input type="time" id="workStart" required></label>
+    <label class="field">근무 종료 <input type="time" id="workEnd" required></label>
+    <p class="err" data-err="workTime"></p>
+    <label class="field">퇴근 후 첫 알림까지 <select id="grace"></select></label>
+    <p class="hint">평일에는 근무 시작 전과 '종료 + 유예' 이후에 매시 정각 알립니다. 주말·공휴일은 24시간 알립니다.</p>
+  </section>
+
+  <section class="card" id="p-notify" hidden>
+    <h2>휴대폰 알림</h2>
+    <p class="hint">팝업이 뜰 때 켜진 채널로 같은 내용을 보냅니다.</p>
+
+    <label class="check"><input type="checkbox" id="ntfyOn" data-toggle="ntfyBox"> ntfy</label>
+    <div class="sub" id="ntfyBox">
+      <label class="field">서버 <input type="url" id="ntfyServer" spellcheck="false"></label>
+      <label class="field">토픽 <input type="text" id="ntfyTopic" spellcheck="false"></label>
+      <label class="field">토큰 (선택)
+        <span class="secret"><input type="password" id="ntfyToken" autocomplete="off" spellcheck="false"><button type="button" data-reveal="ntfyToken">보기</button></span>
+      </label>
+      <p class="hint">휴대폰 ntfy 앱에서 같은 토픽을 구독하세요. 토픽은 남이 추측하기 어려운 이름으로 정하세요.</p>
+      <p class="err" data-err="ntfy"></p>
+      <div class="row"><button type="button" data-test="ntfy">ntfy 테스트</button><span class="result" id="ntfyResult"></span></div>
+    </div>
+
+    <label class="check"><input type="checkbox" id="telegramOn" data-toggle="telegramBox"> 텔레그램</label>
+    <div class="sub" id="telegramBox">
+      <label class="field">봇 토큰
+        <span class="secret"><input type="password" id="telegramToken" autocomplete="off" spellcheck="false"><button type="button" data-reveal="telegramToken">보기</button></span>
+      </label>
+      <label class="field">chat_id <input type="text" id="telegramChat" spellcheck="false"></label>
+      <p class="hint">텔레그램 @BotFather에서 봇을 만들어 토큰을 받으세요. 봇에게 아무 메시지나 보낸 뒤 브라우저로 api.telegram.org/bot&lt;토큰&gt;/getUpdates 를 열면 chat.id가 보입니다.</p>
+      <p class="err" data-err="telegram"></p>
+      <div class="row"><button type="button" data-test="telegram">텔레그램 테스트</button><span class="result" id="telegramResult"></span></div>
+    </div>
+  </section>
+
+  <section class="card" id="p-holiday" hidden>
+    <h2>수동 공휴일</h2>
+    <p class="hint">공휴일 목록에 없는 쉬는 날(창립기념일 등)을 넣으면 그날은 하루 종일 알립니다.</p>
+    <div class="row"><input type="date" id="holidayInput"><button type="button" id="holidayAdd">추가</button></div>
+    <ul id="holidayList"></ul>
+  </section>
+
+  <section id="p-general" hidden>
+    <div class="card">
+      <h2>팝업 위치</h2>
+      <label class="radio"><input type="radio" name="pos" value="center"> 화면 가운데</label>
+      <label class="radio"><input type="radio" name="pos" value="bottom_right"> 오른쪽 아래</label>
+      <div class="row"><button type="button" id="preview">미리보기</button></div>
+    </div>
+    <div class="card">
+      <h2>시작</h2>
+      <label class="check"><input type="checkbox" id="autostart"> 컴퓨터를 켜면 자동 실행</label>
+    </div>
+  </section>
+</main>
+</div>
+
+<footer class="savebar">
+  <span id="saveMsg"></span>
+  <button type="button" id="save" class="primary" disabled>저장</button>
+</footer>
+
+<dialog id="closeDialog">
+  <p>저장하지 않은 변경이 있습니다. 닫을까요?</p>
+  <div class="row end">
+    <button type="button" id="closeCancel">취소</button>
+    <button type="button" id="closeDiscard" class="danger">저장 안 하고 닫기</button>
+  </div>
+</dialog>
+
+<script src="settings.js"></script>
+</body>
+</html>
