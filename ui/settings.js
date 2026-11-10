@@ -80,7 +80,7 @@ function fillForm({ settings, autostart }) {
 // 백엔드 Settings::validate와 같은 규칙. 칸별로 문구를 보여 주려고 프런트에서도 검사한다
 function validate({ settings: s }) {
   const errors = {};
-  if (!s.work_start || !s.work_end) errors.workTime = '시각을 입력하세요';
+  if (!s.work_start || !s.work_end) errors.workTime = '근무 시작과 종료 시각을 입력하세요';
   else if (s.work_start >= s.work_end) errors.workTime = '근무 시작은 종료보다 빨라야 합니다';
   if (s.ntfy.enabled) {
     if (!/^https?:\/\//.test(s.ntfy.server)) errors.ntfy = '서버 주소는 http:// 또는 https:// 로 시작해야 합니다';
@@ -157,10 +157,10 @@ async function loadStatus() {
     const status = await invoke('get_status');
     const s = saved.settings;
     $('todayText').textContent = status.day_off
-      ? '휴일 · 24시간 매시 알림'
-      : `평일 · ${addMinutes(s.work_end, s.end_grace_min)}부터 다음 날 ${s.work_start}까지 매시 알림`;
+      ? '오늘은 휴일입니다. 하루 종일 매시 정각에 알립니다.'
+      : `오늘은 평일입니다. ${addMinutes(s.work_end, s.end_grace_min)}부터 다음 날 ${s.work_start}까지 매시 정각에 알립니다.`;
     $('nextText').textContent = status.muted ? '' : formatNext(status.next_alert);
-    $('muteText').textContent = status.muted ? '오늘은 알림을 껐습니다 (자정에 다시 켜짐)' : '알림 켜짐';
+    $('muteText').textContent = status.muted ? '오늘은 알림을 껐습니다. 자정에 다시 켜집니다.' : '알림이 켜져 있습니다.';
     $('muteText').className = status.muted ? 'muted-on' : '';
     $('unmute').hidden = !status.muted;
   } catch (e) {
@@ -173,7 +173,7 @@ async function save() {
   const errors = validate(form);
   showErrors(errors);
   if (Object.keys(errors).length > 0) {
-    setSaveMsg('입력값을 확인하세요', 'bad');
+    setSaveMsg('빨간 글씨로 표시한 칸을 고치세요', 'bad');
     // 오류 칸이 다른 메뉴에 있으면 보이지 않으므로 그 페이지로 옮긴다
     const firstErr = document.querySelector('[data-err]:not(:empty)');
     showPage(firstErr.closest('main > section').id.slice('p-'.length));
@@ -184,7 +184,7 @@ async function save() {
   try {
     await invoke('save_settings', form);
     saved = form;
-    setSaveMsg('저장됨', 'ok');
+    setSaveMsg('저장했습니다', 'ok');
     loadStatus();
   } catch (e) {
     setSaveMsg(String(e), 'bad');
@@ -206,10 +206,10 @@ async function testPush(channel, button) {
   out.textContent = '보내는 중…';
   try {
     await invoke('test_push', { settings: only });
-    out.textContent = '✓ 보냈습니다. 휴대폰을 확인하세요';
+    out.textContent = '보냈습니다. 휴대폰을 확인하세요.';
     out.classList.add('ok');
   } catch (e) {
-    out.textContent = `✕ ${e}`;
+    out.textContent = String(e);
     out.classList.add('bad');
   } finally {
     button.disabled = false;

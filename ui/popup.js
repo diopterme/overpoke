@@ -4,7 +4,7 @@ const { listen } = window.__TAURI__.event;
 // "오늘은 그만"은 실수로 누르면 자정까지 꺼지므로 두 번 눌러야 적용
 const MUTE_CONFIRM_MS = 3000;
 const MUTE_LABEL = '오늘은 그만';
-const MUTE_ARMED_LABEL = '한 번 더 누르면 오늘 끔';
+const MUTE_ARMED_LABEL = '한 번 더 누르면 오늘 꺼집니다';
 
 const timeEl = document.getElementById('time');
 const textEl = document.getElementById('text');
