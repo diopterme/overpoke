@@ -6,6 +6,7 @@ mod scheduler;
 mod settings;
 mod store;
 mod tray;
+#[allow(dead_code)] // 자동 업데이트를 꺼 둔 동안 쓰지 않는 코드
 mod updater;
 mod window;
 
@@ -80,7 +81,8 @@ pub fn run() {
                 }
             }
             scheduler::spawn(app.handle().clone());
-            updater::spawn(app.handle().clone());
+            // 자동 업데이트 비활성화. 다시 켜려면 아래 줄의 주석을 푼다
+            // updater::spawn(app.handle().clone());
             Ok(())
         })
         .build(tauri::generate_context!())
