@@ -6,6 +6,7 @@ mod scheduler;
 mod settings;
 mod store;
 mod tray;
+mod updater;
 mod window;
 
 use std::path::PathBuf;
@@ -51,6 +52,8 @@ pub fn run() {
         // 반드시 첫 플러그인. 두 번째 실행 시도는 설정 창을 띄우는 것으로 대신한다.
         .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| tray::open_settings(app)))
         .plugin(tauri_plugin_autostart::init(MacosLauncher::LaunchAgent, None))
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
             commands::get_settings,
             commands::save_settings,
@@ -77,6 +80,7 @@ pub fn run() {
                 }
             }
             scheduler::spawn(app.handle().clone());
+            updater::spawn(app.handle().clone());
             Ok(())
         })
         .build(tauri::generate_context!())
