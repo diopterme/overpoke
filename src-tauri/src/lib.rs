@@ -14,7 +14,7 @@ use std::path::PathBuf;
 use std::sync::Mutex;
 
 use tauri::Manager;
-use tauri_plugin_autostart::MacosLauncher;
+use tauri_plugin_autostart::{MacosLauncher, ManagerExt};
 
 use holidays::HolidayCache;
 use schedule::RunState;
@@ -48,11 +48,14 @@ impl AppState {
     }
 }
 
+// 컴퓨터 시작 때 자동 실행으로 켜졌는지 구분하는 인자
+const AUTOSTART_ARG: &str = "--autostart";
+
 pub fn run() {
     tauri::Builder::default()
         // 반드시 첫 플러그인. 두 번째 실행 시도는 설정 창을 띄우는 것으로 대신한다.
         .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| tray::open_settings(app)))
-        .plugin(tauri_plugin_autostart::init(MacosLauncher::LaunchAgent, None))
+        .plugin(tauri_plugin_autostart::init(MacosLauncher::LaunchAgent, Some(vec![AUTOSTART_ARG])))
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
@@ -73,9 +76,18 @@ pub fn run() {
             let dir = app.path().app_data_dir()?;
             // 설정을 한 번도 저장하지 않았으면 첫 실행으로 보고 설정 창을 연다
             let is_first_run = !dir.join(SETTINGS_FILE).exists();
+            // 자동 실행이면 창 없이 트레이에서만 시작한다
+            let is_autostart = std::env::args().any(|a| a == AUTOSTART_ARG);
             app.manage(AppState::load(dir));
+            // 0.1.1 이하에서 등록한 자동 실행에는 AUTOSTART_ARG가 없어서 다시 등록한다
+            let launcher = app.autolaunch();
+            if launcher.is_enabled().unwrap_or(false) {
+                if let Err(e) = launcher.enable() {
+                    store::log_error(&app.state::<AppState>().dir, &format!("자동 실행 재등록 실패: {e}"));
+                }
+            }
             tray::build(app)?;
-            if is_first_run {
+            if is_first_run && !is_autostart {
                 if let Err(e) = window::open_settings(app.handle()) {
                     store::log_error(&app.state::<AppState>().dir, &format!("설정 창 열기 실패: {e}"));
                 }
