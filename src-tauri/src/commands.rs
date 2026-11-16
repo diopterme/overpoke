@@ -110,3 +110,21 @@ pub async fn test_push(settings: Settings) -> Result<String, String> {
     let errors = push::send_all(&settings, "[초과콕] 테스트 알림");
     if errors.is_empty() { Ok("전송 완료".into()) } else { Err(errors.join("\n")) }
 }
+
+/// [정보] 메뉴의 링크. 화면이 아무 주소나 열지 못하게 이름으로 받는다.
+#[tauri::command]
+pub fn open_link(name: String) -> Result<(), String> {
+    let url = match name.as_str() {
+        "manual" => "https://diopterme.github.io/overpoke/manual.html",
+        "issues" => "https://github.com/diopterme/overpoke/issues",
+        "sponsor" => "https://github.com/sponsors/diopterme",
+        "site" => "https://www.diopter.me",
+        _ => return Err(format!("모르는 링크: {name}")),
+    };
+    #[cfg(target_os = "windows")]
+    let mut open = std::process::Command::new("explorer");
+    #[cfg(not(target_os = "windows"))]
+    let mut open = std::process::Command::new("/usr/bin/open");
+    // explorer는 브라우저를 열어도 종료 코드 1이라 끝나기를 기다리지 않는다
+    open.arg(url).spawn().map(drop).map_err(|e| format!("브라우저 열기 실패: {e}"))
+}

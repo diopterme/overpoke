@@ -68,6 +68,7 @@ pub fn run() {
             commands::close_popup,
             commands::popup_message,
             commands::test_push,
+            commands::open_link,
         ])
         .setup(|app| {
             // 개발 환경(macOS)에서 Dock 아이콘 숨김 — 트레이 전용

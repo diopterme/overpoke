@@ -13,6 +13,7 @@
   <button type="button" data-page="notify">휴대폰 알림</button>
   <button type="button" data-page="holiday">회사 쉬는 날</button>
   <button type="button" data-page="general">일반</button>
+  <button type="button" data-page="about">정보</button>
 </nav>
 <main>
   <section class="card" id="p-status">
@@ -80,6 +81,23 @@
       <h2>자동 실행</h2>
       <label class="check"><input type="checkbox" id="autostart"> 컴퓨터를 켜면 초과콕을 자동으로 실행</label>
     </div>
+  </section>
+
+  <section id="p-about" hidden>
+    <div class="card">
+      <div class="app">
+        <img src="icon.png" alt="" width="56" height="56">
+        <div><b>초과콕</b> <span class="hint" id="version"></span><br>퇴근 후 초과근무 기록, 잊지 않게 콕 찔러 드립니다.</div>
+      </div>
+      <div class="row"><button type="button" data-link="manual">사용설명서</button><button type="button" data-link="issues">문의 · 오류 신고</button></div>
+    </div>
+    <div class="card">
+      <h2>☕ 커피 한 잔</h2>
+      <p>초과콕 덕분에 수당을 챙겼다면, 커피 한 잔 값으로 응원해 주세요.</p>
+      <div class="row"><button type="button" data-link="sponsor">♥ GitHub에서 후원하기</button></div>
+    </div>
+    <p class="hint maker"><button type="button" class="link" data-link="site">diopter.me</button> 가 퇴근하고 만들었습니다. 초과근무는 안 달았습니다.</p>
+    <p class="err" id="linkErr"></p>
   </section>
 </main>
 </div>

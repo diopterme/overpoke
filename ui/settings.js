@@ -1,6 +1,7 @@
 const { invoke } = window.__TAURI__.core;
 const { listen } = window.__TAURI__.event;
 const { getCurrentWindow } = window.__TAURI__.window;
+const { getVersion } = window.__TAURI__.app;
 
 const GRACE_CHOICES = [0, 5, 10, 15, 20, 30];
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
@@ -228,6 +229,11 @@ function addHoliday() {
 async function init() {
   document.querySelectorAll('nav [data-page]').forEach(b => b.addEventListener('click', () => showPage(b.dataset.page)));
   showPage('status');
+  getVersion().then(v => { $('version').textContent = v; }, () => {});
+  document.querySelectorAll('[data-link]').forEach(b => b.addEventListener('click', () => {
+    $('linkErr').textContent = '';
+    invoke('open_link', { name: b.dataset.link }).catch(e => { $('linkErr').textContent = String(e); });
+  }));
   try {
     saved = normalize(await invoke('get_settings'));
   } catch (e) {

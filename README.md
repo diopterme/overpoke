@@ -42,6 +42,10 @@ Mac에서는 dmg 파일을 열고 앱을 응용 프로그램 폴더로 끌어 �
 
 전체 안내문은 [notice.txt](src-tauri/notice.txt)에 있습니다.
 
+## ☕ 커피 한 잔
+
+초과콕은 무료입니다. 덕분에 수당을 챙겼다면 [GitHub 에서 후원](https://github.com/sponsors/diopterme)할 수 있습니다.
+
 ---
 
 <details>
@@ -56,3 +60,11 @@ npx @tauri-apps/cli@2 build        # 설치 파일 만들기
 ```
 
 </details>
+
+---
+
+<p align="center">
+  퇴근길에 초과근무 버튼 안 눌렀다는 게 생각나서 만들었습니다.<br>
+  <a href="https://www.diopter.me">diopter.me</a> 가 퇴근하고 만들었습니다<br>
+  <a href="https://www.diopter.me">홈페이지</a> · <a href="https://www.youtube.com/@diopterme">YouTube</a> · <a href="https://www.instagram.com/diopter.me">Instagram</a>
+</p>
