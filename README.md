@@ -1,4 +1,23 @@
-# 초과콕
+<p align="center">
+  <img src="src-tauri/icons/128x128@2x.png" width="128" height="128" alt="초과콕 아이콘">
+</p>
+
+<h1 align="center">초과콕</h1>
+
+<p align="center">
+  퇴근 후 초과근무 기록, 잊지 않게 콕 찔러 드립니다.
+</p>
+
+<p align="center">
+  <a href="https://github.com/diopterme/overpoke/releases/latest"><img src="https://img.shields.io/github/v/release/diopterme/overpoke" alt="최신 버전"></a>
+  <a href="https://github.com/diopterme/overpoke/releases"><img src="https://img.shields.io/github/downloads/diopterme/overpoke/total" alt="다운로드 수"></a>
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS-lightgrey" alt="Windows | macOS">
+</p>
+
+<p align="center">
+  <a href="https://github.com/diopterme/overpoke/releases/latest"><img src="https://img.shields.io/badge/다운로드-Windows%2010%2F11-0078d4?style=for-the-badge" alt="Windows 다운로드"></a>
+  <a href="https://github.com/diopterme/overpoke/releases/latest"><img src="https://img.shields.io/badge/다운로드-macOS%20(M1%20이후)-1f2328?style=for-the-badge" alt="Mac 다운로드"></a>
+</p>
 
 초과콕은 근무시간이 아닐 때 매시 정각마다 "초과근무 기록 버튼을 누르세요"라는 알림 창을 PC 화면에 띄우는 앱입니다.
 퇴근 후 초과근무 기록 버튼을 잊지 않게 하려고 만들었습니다. 원하면 휴대폰으로도 같은 알림을 보냅니다.
